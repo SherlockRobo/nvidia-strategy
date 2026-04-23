@@ -569,94 +569,252 @@
 
   <!-- ==================== Ⅵ ==================== -->
   <section id="s6">
-    <h2><span class="roman">Ⅵ.</span>副作用：CoreWeave 会被打成什么样</h2>
+    <h2><span class="roman">Ⅵ.</span>AI 时代的"前店后厂"——NVIDIA 与 CoreWeave 的 11.5% 故事</h2>
 
-    <p>这一章讲最被低估的一个事：<strong>NVIDIA 的收租化会直接冲击 CoreWeave 这类"纯 GPU 租赁"公司的商业模式</strong>。</p>
+    <p>如果前五章读下来，一个自然的疑问是：NVIDIA 既然要做"算力收租"的五层蛋糕，为什么不自己建数据中心、自己包办所有租赁生意？为什么还要让 CoreWeave 存在，甚至持它 11.5% 的股权？</p>
 
-    <h3>CoreWeave 的生意是什么</h3>
+    <p>这一章讲这个问题。答案比想象中精巧——<strong>NVIDIA 和 CoreWeave 不是对手，是"前店后厂"的分工</strong>。NVIDIA 做前店（品牌、API、中小开发者入口、软件生态），CoreWeave 做后厂（土地、电力、重资产数据中心、大客户专属集群）。两家合起来，本质上完成了一件更大的事：<span class="highlight">通过产能分配权，把原本"买 GPU"的客户，一批批地赶进"租 GPU"的渠道</span>。</p>
 
-    <p>CoreWeave 的业务模式可以一句话概括：<strong>"从 NVIDIA 批量买卡，改造成云服务再转租给 AI 客户"</strong>。关键数据（FY2024）：</p>
-    <ul>
-      <li>收入 $19 亿（同比增长 737%，增速爆炸）</li>
-      <li>约 25 万张 GPU（H100 为主，B200 快速补充）</li>
-      <li>客户集中度极高：<strong>微软贡献 60%+ 收入</strong>，OpenAI、Meta 是前三大客户</li>
-      <li>商业模式：长期租约（2-5 年），毛利率约 65%</li>
-      <li>资本开支凶猛：2024 年 capex 约 $170 亿，几乎全部用来买 NVIDIA 卡</li>
-    </ul>
-
-    <p>简单说，CoreWeave 是一个<strong>"GPU 二道贩子"</strong>——通过更激进的融资和快速部署能力，提供比 AWS/Azure 更便宜的 GPU 时租。它的生意建立在两个假设上：</p>
-    <ol>
-      <li>NVIDIA 愿意给它分配足够多的卡（供应端）</li>
-      <li>大客户愿意租而不是买/自建（需求端）</li>
-    </ol>
-
-    <p>免费 token + 五层蛋糕战略，同时动摇了这两个假设。</p>
-
-    <h3>冲击逻辑——三条战线</h3>
-
-    <p><strong>战线 1：需求端侵蚀——推理业务被平台化</strong></p>
-    <p>CoreWeave 的客户用 GPU 主要做两件事：训练和推理。<span class="highlight">build.nvidia.com + NIM 直接把"推理"这个需求从裸 GPU 租赁层，抽象到了 API 调用层</span>。</p>
-    <p>对中小客户：原来要租 CoreWeave 的 8 张 H100 做推理服务，现在直接调 NVIDIA API，省钱省事。</p>
-    <p>对中型客户：原来租 CoreWeave 自搭 vLLM，现在用 NIM 容器+NVIDIA 托管，迁移成本极低。</p>
-    <p>推理业务占 GPU 需求约 40-50%（2026 年还在上升）。<strong>这部分需求正在从"裸 GPU 租赁"迁移到"API/NIM 服务"</strong>——CoreWeave 作为中间商，变得多余。</p>
-
-    <p><strong>战线 2：供给端施压——NVIDIA 掌握生杀大权</strong></p>
-    <p>CoreWeave 的核心供应来自 NVIDIA。三年前，NVIDIA 为了让 Hopper 快速起量，给 CoreWeave 优先供货。现在形势变了——NVIDIA 自己做 DGX Cloud，<strong>CoreWeave 变成了 NVIDIA 自家服务业务的直接竞争对手</strong>。</p>
-    <p>NVIDIA 手里有三把刀可以施压：</p>
-    <ul>
-      <li><strong>配额</strong>：把最新款 B200/Rubin 优先给 DGX Cloud，CoreWeave 拿到的是次新款</li>
-      <li><strong>价格</strong>：对 CoreWeave 收更高的单卡价格，压缩其毛利</li>
-      <li><strong>时间差</strong>：让 DGX Cloud 比 CoreWeave 早 3-6 个月拿到新品</li>
-    </ul>
-    <p>这不是假设——2025 年底已有迹象显示 B200 的早期配额 DGX Cloud 拿走了更大比例。</p>
-
-    <p><strong>战线 3：估值压缩——从"AI 云独角兽"到"GPU 二房东"</strong></p>
-    <p>CoreWeave 2024 年上市时被当作"AI 云平台"讲故事，对标 AWS，给了 $350 亿估值、PE 倍数拉到 60x+。但如果 NVIDIA 做成了五层蛋糕，<strong>"AI 云平台"这个叙事的主角是 NVIDIA 自己，CoreWeave 只是"给 NVIDIA 算力饥饿者提供溢出容量的外包商"</strong>——这两种定位，估值倍数可能差 3-5 倍。</p>
-
-    <h3>三情景推演</h3>
+    <h3>先看位置：CoreWeave 在五层蛋糕的哪一层</h3>
 
     <div class="table-wrap">
     <table>
       <thead>
-        <tr><th>情景</th><th>描述</th><th>概率</th><th>CoreWeave 结局</th></tr>
+        <tr><th>层级</th><th>谁做</th><th>CoreWeave 参与度</th></tr>
       </thead>
       <tbody>
-        <tr>
-          <td><strong class="tag-green">共生</strong></td>
-          <td>NVIDIA 只做头部大客户推理 (DGX Cloud 服务 OpenAI/Meta 级别)，CoreWeave 吃中长尾训练 + 中型客户推理。两者各占各的地盘。</td>
-          <td>30%</td>
-          <td>增长放缓但不死，估值 PE 压缩到 25-30x</td>
-        </tr>
-        <tr>
-          <td><strong class="tag-amber">挤压</strong></td>
-          <td>NIM + build.nvidia.com 蚕食 CoreWeave 推理客户 30-50%。CoreWeave 被迫全面转向训练 + 大客户定制。</td>
-          <td>50%</td>
-          <td>收入增速腰斩，估值 PE 回落到 15-20x，市值可能跌 50%</td>
-        </tr>
-        <tr>
-          <td><strong class="tag-red">取代</strong></td>
-          <td>3-5 年后 DGX Cloud 吃掉 80% 公有 GPU 云市场，CoreWeave 沦为"溢出容量外包商"或被 NVIDIA/微软收购。</td>
-          <td>20%</td>
-          <td>估值归零路径，从 $350 亿跌到 $50-100 亿</td>
-        </tr>
+        <tr><td>5. Services</td><td>NVIDIA（DGX Cloud / build.nvidia.com）</td><td class="tag-red">❌ 不进入</td></tr>
+        <tr><td>4. Software</td><td>NVIDIA（CUDA / NIM / TensorRT-LLM）</td><td class="tag-red">❌ 不进入</td></tr>
+        <tr><td>3. Networking</td><td>NVIDIA 出货，CoreWeave 落地部署</td><td class="tag-green">✅ 代工方</td></tr>
+        <tr><td>2. Systems</td><td>NVIDIA 卖整机，CoreWeave 买来建集群</td><td class="tag-green">✅ <strong>主战场</strong></td></tr>
+        <tr><td>1. Chips</td><td>NVIDIA（H100 / B200 / Rubin）</td><td class="tag-red">❌ 只是采购方</td></tr>
       </tbody>
     </table>
     </div>
 
-    <h3>对 CoreWeave 投资者的含义</h3>
+    <p>CoreWeave 横跨第 2-3 层——它<strong>不做软件、不做 API 服务、不碰第 4-5 层的高毛利地盘</strong>。这不是 CoreWeave 不想做，是 NVIDIA 故意划的线。NVIDIA 持股 11.5% 加长期采购合约，事实上给 CoreWeave 定义了"能做什么、不能做什么"——它只能当"后厂"，不能升级成"前店"。</p>
 
-    <p>CoreWeave 的多头逻辑依赖"AI 算力继续爆炸式增长"——这一点短期没问题。但<strong>它的估值倍数依赖"CoreWeave 作为独立 AI 云平台"的叙事——这一点正在被 NVIDIA 自己拆台</strong>。</p>
+    <h3>CoreWeave 的生意有多大</h3>
 
-    <p>需要密切监控的信号：</p>
-    <ul>
-      <li>DGX Cloud 的收入披露（NVIDIA 季度财报）——拐点是 run-rate 破 $50 亿/年</li>
-      <li>CoreWeave 的客户集中度变化——微软份额继续上升还是开始下降</li>
-      <li>NVIDIA 对 CoreWeave 的供货份额——是不是在被稀释</li>
-      <li>新品（Rubin）首发分配——DGX Cloud vs CoreWeave 时间差</li>
-    </ul>
+    <p>先看规模，才能理解这个"后厂"在整盘棋里的位置。截至 2026 年 4 月的最新数据：</p>
+
+    <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>指标</th><th>数值</th><th>备注</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>2025 年收入</td><td>$51 亿</td><td>同比 +168%</td></tr>
+        <tr><td>2026 年收入指引</td><td><strong>$120-130 亿</strong></td><td>又翻一倍</td></tr>
+        <tr><td>合约在手订单 (Backlog)</td><td><strong>$880 亿</strong></td><td>相当于 2025 年收入的 17 倍</td></tr>
+        <tr><td>2026 年 Capex</td><td>$300-350 亿</td><td>2025 年的 2 倍</td></tr>
+        <tr><td>GPU 保有量</td><td>约 60 万张</td><td>H100/H200 + B200/B300</td></tr>
+        <tr><td>数据中心</td><td>43 个 · 850MW 活跃功率</td><td>合约功率 3.5GW</td></tr>
+        <tr><td>资产负债表债务</td><td>$300 亿</td><td>GPU 作抵押的融资</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <p><strong>$880 亿合约在手订单</strong>这个数字需要单独品味——这是近 10 年云计算行业最激进的确定性增长曲线。作为对照，AWS 2024 年整年收入 $1,075 亿。CoreWeave 的 Backlog 已经相当于一个中等规模 AWS 的年收入。</p>
+
+    <h3>客户画像：CoreWeave 几乎垄断了 AI 顶流</h3>
+
+    <p>CoreWeave 自己披露：<strong>"十大领先 AI 模型厂商中，九家是客户"</strong>。具体名单：</p>
+
+    <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>客户</th><th>合同规模</th><th>关系</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Microsoft</strong></td><td>2025 年贡献 67% 收入</td><td>最早锚定客户，CoreWeave 是 Azure 的 GPU 溢出产能提供方</td></tr>
+        <tr><td><strong>Meta</strong></td><td><strong>$352 亿</strong>（至 2032 年）</td><td>2026 年 4 月扩约 $210 亿</td></tr>
+        <tr><td><strong>OpenAI</strong></td><td><strong>$224 亿</strong></td><td>2025 年 IPO 锚定，2026 年再扩 $65 亿</td></tr>
+        <tr><td><strong>Anthropic</strong></td><td>未披露（多年协议）</td><td>2026 年 4 月签，专用 Claude 生产级推理</td></tr>
+        <tr><td><strong>Jane Street</strong></td><td>$60 亿算力 + $10 亿入股</td><td>量化基金入场——客户从 AI 公司扩展到金融机构</td></tr>
+        <tr><td>Mistral / Cohere / IBM / NVIDIA 自己</td><td>——</td><td>名单内但规模较小</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <p>客户画像极其清晰：<strong>CoreWeave 服务的全是"超大客户"</strong>——顶级 AI 实验室、大模型公司、超大规模金融机构。共同特点是单客户需求 $100 亿级别、合约周期 5-7 年、需要 GW 级专属数据中心、要求最新一代 GPU 首发供货。</p>
+
+    <h3>关键问题：CoreWeave 客户和 NVIDIA 直接客户重叠吗</h3>
+
+    <p>这是理解"前店后厂"的核心。答案是：<strong>几乎零重叠</strong>。</p>
+
+    <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>客户类型</th><th>CoreWeave 服务</th><th>NVIDIA 直接服务</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>超大客户（$10B+ 需求）</td><td class="tag-green">✅ 专属集群</td><td class="tag-red">❌ 基本不服务</td></tr>
+        <tr><td>大型企业（$1-10M 年需求）</td><td class="tag-amber">⚠️ 部分</td><td class="tag-green">✅ DGX Cloud</td></tr>
+        <tr><td>中型企业（POC / 生产试点）</td><td class="tag-red">❌ 门槛太高</td><td class="tag-green">✅ NIM / AI Enterprise</td></tr>
+        <tr><td>中小开发者 / 初创 / 个人</td><td class="tag-red">❌ 不做</td><td class="tag-green">✅ <strong>build.nvidia.com</strong></td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <p>分工干净利落：CoreWeave 吃"大客户长约"，NVIDIA 吃"中小客户短租+API"。两家不抢同一块肉。</p>
 
     <blockquote class="key">
-      <strong>CoreWeave 的困境本质</strong>：它是 NVIDIA 崛起的直接受益者（从 NVIDIA 买卡转租获得超额回报），也是 NVIDIA 五层蛋糕完成后的直接受害者（自己的生意被 NVIDIA 内化）。<span class="highlight">它的命运由一个不受控的变量决定：NVIDIA 对它是合作还是竞争</span>。
+      <strong>这就是"前店后厂"的第一层含义——按客户大小分工。</strong>NVIDIA 用前店（品牌 + API）接中小开发者，CoreWeave 用后厂（数据中心 + 专属集群）接超大客户，彼此输送而非竞争。
+    </blockquote>
+
+    <h3>核心洞察：产能即战略——NVIDIA 的"逼租"系统</h3>
+
+    <p>讲到这里，真正的底层逻辑才浮出来。问一个更尖锐的问题：<strong>NVIDIA 的 GPU 产能为什么永远不够？</strong></p>
+
+    <p>表面答案是"AI 需求太旺盛，TSMC 产能受限"。但看深一点——<strong>TSMC 的 3nm / 2nm 产能 NVIDIA 想要多少能谈多少，NVIDIA 并没有在拼命追加</strong>。Rubin 的发布节奏也是一年一代，旧货迅速贬值。这不像一个"急着满足所有需求"的公司。</p>
+
+    <p>真相是：<span class="highlight"><strong>产能饥饿不是 NVIDIA 的副作用，是它的战略工具</strong></span>。</p>
+
+    <h4>产能分配的 Tier 分层</h4>
+
+    <p>NVIDIA 每一代新 GPU（比如 2026 年的 Rubin）出货时，内部有一套严格的优先级分配：</p>
+
+    <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Tier</th><th>客户层级</th><th>新品首发时间</th><th>供货优先级</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Tier 0</td><td>Meta / xAI / OpenAI 级超大客户</td><td>Day 0</td><td class="tag-green">最高</td></tr>
+        <tr><td>Tier 1</td><td>CoreWeave 等嫡系 neocloud</td><td>Day 0-30</td><td class="tag-green">高（长单绑定）</td></tr>
+        <tr><td>Tier 2</td><td>NVIDIA DGX Cloud 自营</td><td>Day 0-60</td><td class="tag-green">高（自家业务）</td></tr>
+        <tr><td>Tier 3</td><td>AWS / Azure / GCP</td><td>Day 90-180</td><td class="tag-amber">中（政治考量）</td></tr>
+        <tr><td>Tier 4</td><td>二线云厂 / 中型企业直销</td><td>Day 180-365</td><td class="tag-amber">低</td></tr>
+        <tr><td>Tier 5</td><td>中小企业 / 开发者 / 个人</td><td class="tag-red"><strong>基本没有</strong></td><td class="tag-red"><strong>必须租</strong></td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h4>"买不到 → 被迫租"的逼租机制</h4>
+
+    <p>产能分层产生三层"挤压效应"：</p>
+
+    <p><strong>机制 1：时间差逼租</strong>。新款 Rubin 首发给 Tier 0-2，普通企业想买同款要等半年到一年。但 AI 竞争的窗口期只有 6 个月——<span class="highlight">等不起的客户只能去 CoreWeave / DGX Cloud 租一段时间过渡</span>。租着租着就习惯了，不再自建。</p>
+
+    <p><strong>机制 2：数量配额逼租</strong>。中型 AI 公司想买 500 张 B200 自建，NVIDIA 直销渠道只给 50 张配额。想要 500 张？去 CoreWeave 按小时租。<strong>"买不够 → 租来补"</strong>。</p>
+
+    <p><strong>机制 3：技术门槛逼租</strong>。就算 500 张卡到手，NVLink 集群调优、液冷部署、电力接入、Kubernetes 调度每一步都是坑。CoreWeave / DGX Cloud 直接提供"交钥匙方案"——<strong>"搞不定 → 干脆租"</strong>。</p>
+
+    <h4>三层叠加的最终效果</h4>
+
+    <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>客户类型</th><th>选择</th><th>原因</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Tier 0 超大客户（Meta/OpenAI）</td><td>买卡 + 租 CoreWeave</td><td>两条腿走路</td></tr>
+        <tr><td>Tier 1 大企业（字节/腾讯级）</td><td>主要自建 + 溢出租</td><td>有钱有技术</td></tr>
+        <tr><td><strong>Tier 2 中大型 AI 公司</strong>（Mistral 级）</td><td><strong>基本全租</strong></td><td><strong>买不到、建不起</strong></td></tr>
+        <tr><td>Tier 3 中型企业（垂直 SaaS）</td><td>DGX Cloud + NIM</td><td>轻资产</td></tr>
+        <tr><td>Tier 4 中小开发者</td><td>build.nvidia.com API</td><td>免费/按量</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <p>Tier 2 那一层是增长最快的客户群——<strong>他们几乎 100% 被"逼"进了租赁模式</strong>。</p>
+
+    <h4>NVIDIA 的真正算盘</h4>
+
+    <p>看穿这个机制之后，五层蛋糕战略的底层发动机就清楚了：</p>
+
+    <pre style="background:var(--bg-2);padding:20px;border-radius:4px;font-family:'SF Mono',Monaco,monospace;font-size:13px;line-height:1.8;color:var(--text-1);margin:20px 0;overflow-x:auto">NVIDIA 控制产能分配
+         ↓
+故意让一部分客户"买不到 GPU"
+         ↓
+这部分客户被迫走服务租赁路径
+（CoreWeave 大客户租 / DGX Cloud 中型租 / build.nvidia.com 小客户租）
+         ↓
+收入从"一次性硬件 75% 毛利"
+转成"持续订阅 85-90% 毛利"
+         ↓
+估值从半导体股重估为 AI 平台股</pre>
+
+    <p>本质上，NVIDIA 不是在"创造新需求"。它是在<strong>把同一批算力需求，从"硬件销售"渠道挤压到"服务租赁"渠道</strong>——价值从客户账面上的一次性 capex，转化成 NVIDIA 账面上的持续经常性收入。</p>
+
+    <blockquote class="key">
+      <strong>这是"前店后厂"的第二层含义——也是更深的一层。</strong>NVIDIA 不会敞开供应 GPU，因为那样只能赚一次性的硬件钱。通过人为的"产能饥饿"加上"CoreWeave + DGX Cloud + build.nvidia.com"的三级租赁网络，<span class="highlight">NVIDIA 把"卖产品"的生意，改造成了"收租金"的生意</span>。
+    </blockquote>
+
+    <h3>CoreWeave 吃掉了 NVIDIA 多少产能</h3>
+
+    <p>既然产能分配是战略工具，CoreWeave 拿到的份额就是 NVIDIA 表态的最直接信号。</p>
+
+    <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>维度</th><th>数据</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>CoreWeave 2026 Capex</td><td>$300-350 亿</td></tr>
+        <tr><td>其中买 GPU 部分（约 70-75%）</td><td>$210-260 亿</td></tr>
+        <tr><td>NVIDIA FY2026E 数据中心总收入</td><td>~$1,500-1,800 亿</td></tr>
+        <tr><td><strong>CoreWeave 占 NVIDIA DC 收入比</strong></td><td><strong>约 12-15%</strong></td></tr>
+        <tr><td>加上其他 neocloud（Lambda/Crusoe/Nebius 等）</td><td><strong>整类占 20-25%</strong></td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <p>一家 CoreWeave 就吃掉 NVIDIA 一年新 GPU 产能的 10-12%——这是<strong>刻意倾斜的结果</strong>。NVIDIA 用这部分产能换 CoreWeave 的：11.5% 股权 + 至 2032 年的 $63 亿采购承诺 + 对超大客户长约的覆盖 + 向 DGX Cloud 输送技术反馈。</p>
+
+    <h3>11.5% 股权绑定：为什么是这个数字</h3>
+
+    <p>NVIDIA 不是没钱全资收购 CoreWeave（按当前市值约 $600-700 亿），也不是没能力自建数据中心。它选择持股 11.5%、做第二大股东，是精心算计的结果：</p>
+
+    <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>选项</th><th>成本</th><th>NVIDIA 评估</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>自建 5GW 数据中心</td><td>$2,250-3,000 亿 capex</td><td class="tag-red">❌ 太重资产，股价会被拖累</td></tr>
+        <tr><td>全资收购 CoreWeave</td><td>$600-700 亿 + 反垄断风险</td><td class="tag-red">❌ 太贵，监管压力</td></tr>
+        <tr><td><strong>持股 11.5% + 长单 + 首发权</strong></td><td><strong>$47 亿 + 配额倾斜</strong></td><td class="tag-green">✅ <strong>四两拨千斤</strong></td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <p>11.5% 这个数字本身很讲究：</p>
+    <ul>
+      <li><strong>低于 20%</strong>：不触发"权益法"并表，NVIDIA 报表不被 CoreWeave 的 $300 亿债务污染</li>
+      <li><strong>高于 10%</strong>：SEC 必须披露大股东动向，NVIDIA 对 CoreWeave 信息透明掌握</li>
+      <li><strong>第二大股东</strong>：董事会有话语权但不直接控盘，避免反垄断指控</li>
+    </ul>
+
+    <h3>未来会继续增持吗——几个触发点</h3>
+
+    <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>触发场景</th><th>增持可能幅度</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>CoreWeave 股价大跌（债务担忧/客户流失）</td><td>11.5% → 15-18%（抄底）</td></tr>
+        <tr><td>反垄断压力缓解（政策窗口）</td><td>11.5% → 18-20%</td></tr>
+        <tr><td>CoreWeave 5GW 扩张新一轮融资</td><td>每轮增 1-2%</td></tr>
+        <tr><td>竞争威胁（Lambda/Crusoe 撬客户）</td><td>11.5% → 25%（战略控股线）</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <p>合理推测：<strong>2027 年前 NVIDIA 持股大概率升至 15-18% 区间</strong>——继续拿杠杆效应，但不触发 20% 的并表红线。</p>
+
+    <h3>两个真正的受害者</h3>
+
+    <p>前店后厂系统运转起来后，有两类玩家是结构性受害者：</p>
+
+    <p><strong>受害者 1：独立 neocloud（Lambda、Crusoe、Nebius、Applied Digital）</strong>。他们和 CoreWeave 做同样的生意，但没拿到 NVIDIA 的股权绑定。在 Tier 分层里他们顶多是 Tier 1 的二等公民——新品首发慢、配额少、融资故事讲不响。<strong>大概率在 2027-2028 年被并购或边缘化</strong>。</p>
+
+    <p><strong>受害者 2：大型云厂（AWS / Azure / GCP）</strong>。传统分工是"云厂买 GPU，转售算力给开发者"，云厂吃中间差价。现在 NVIDIA 直接绕过云厂，通过 CoreWeave（大客户）+ DGX Cloud（中型）+ build.nvidia.com（小客户）三级渠道覆盖全客户层级——<strong>云厂被挤到只剩"卖自家软件 + 客户关系"两条护城河</strong>。这也是为什么 AWS 加速 Trainium、Azure 绑定 OpenAI、Google 死守 TPU——他们在努力离 NVIDIA 远一点。</p>
+
+    <blockquote class="key">
+      <strong>一句话总结</strong>：NVIDIA 和 CoreWeave 不是敌人，是两家联手的"算力房东"。NVIDIA 掌握产能分配权，CoreWeave 提供重资产承接能力，<span class="highlight">合起来把一个原本"卖零件"的市场，改造成了"收租金"的市场</span>。11.5% 股权 + $63 亿采购承诺 + 产能倾斜，是这个系统最关键的三根螺丝。
     </blockquote>
   </section>
 
