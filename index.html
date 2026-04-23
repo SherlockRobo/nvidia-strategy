@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NVIDIA 免费 Token 战略解读 | AI 工厂的阳谋</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root{
+    --nv-green:#76B900;
+    --nv-green-dim:#5A8F00;
+    --bg-0:#0A0A0A;
+    --bg-1:#131313;
+    --bg-2:#1A1A1A;
+    --bg-3:#242424;
+    --border:#2E2E2E;
+    --text-1:#FAFAFA;
+    --text-2:#B8B8B8;
+    --text-3:#7A7A7A;
+    --accent-amber:#FFB800;
+    --accent-red:#E53935;
+    --accent-blue:#3FA9F5;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg-0);
+    color:var(--text-1);
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    line-height:1.7;
+    font-size:15px;
+  }
+  .container{max-width:1280px;margin:0 auto;padding:48px 32px}
+
+  /* Header */
+  .hero{
+    text-align:center;
+    padding:60px 24px 48px;
+    border-bottom:1px solid var(--border);
+    margin-bottom:48px;
+    background:radial-gradient(ellipse at top, rgba(118,185,0,0.08), transparent 70%);
+  }
+  .hero-tag{
+    display:inline-block;
+    color:var(--nv-green);
+    font-size:13px;
+    letter-spacing:3px;
+    font-weight:600;
+    margin-bottom:16px;
+    text-transform:uppercase;
+  }
+  .hero h1{
+    font-size:48px;
+    font-weight:800;
+    line-height:1.15;
+    margin-bottom:20px;
+    letter-spacing:-0.5px;
+  }
+  .hero h1 .highlight{color:var(--nv-green)}
+  .hero p{color:var(--text-2);font-size:18px;max-width:720px;margin:0 auto}
+  .hero-meta{
+    margin-top:24px;
+    color:var(--text-3);
+    font-size:13px;
+    letter-spacing:1px;
+  }
+
+  /* TL;DR card */
+  .tldr{
+    background:linear-gradient(135deg, rgba(118,185,0,0.08) 0%, rgba(118,185,0,0.02) 100%);
+    border:1px solid rgba(118,185,0,0.3);
+    border-left:4px solid var(--nv-green);
+    border-radius:8px;
+    padding:28px 32px;
+    margin-bottom:48px;
+  }
+  .tldr-label{
+    color:var(--nv-green);
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:2px;
+    margin-bottom:12px;
+  }
+  .tldr h2{
+    font-size:24px;
+    margin-bottom:16px;
+    font-weight:700;
+  }
+  .tldr p{color:var(--text-2);font-size:16px}
+  .tldr strong{color:var(--nv-green);font-weight:600}
+
+  /* Section */
+  section{margin-bottom:64px}
+  .section-header{
+    display:flex;
+    align-items:baseline;
+    gap:16px;
+    margin-bottom:32px;
+    padding-bottom:16px;
+    border-bottom:1px solid var(--border);
+  }
+  .section-number{
+    color:var(--nv-green);
+    font-size:14px;
+    font-weight:700;
+    letter-spacing:2px;
+    font-family:"SF Mono",Monaco,monospace;
+  }
+  .section-header h2{
+    font-size:28px;
+    font-weight:700;
+    letter-spacing:-0.3px;
+  }
+  .section-sub{color:var(--text-3);font-size:14px;margin-left:auto}
+
+  /* Stat grid */
+  .stat-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:16px;
+    margin-bottom:32px;
+  }
+  .stat-card{
+    background:var(--bg-1);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:24px;
+    transition:all 0.2s;
+  }
+  .stat-card:hover{
+    border-color:var(--nv-green);
+    transform:translateY(-2px);
+  }
+  .stat-label{color:var(--text-3);font-size:12px;margin-bottom:8px;letter-spacing:1px}
+  .stat-value{font-size:32px;font-weight:700;color:var(--nv-green);line-height:1.1;margin-bottom:6px}
+  .stat-desc{color:var(--text-2);font-size:13px}
+
+  /* Two-column */
+  .two-col{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:24px;
+    margin-bottom:24px;
+  }
+
+  /* Card */
+  .card{
+    background:var(--bg-1);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:28px;
+  }
+  .card-title{
+    font-size:16px;
+    font-weight:600;
+    margin-bottom:16px;
+    color:var(--text-1);
+    padding-bottom:12px;
+    border-bottom:1px solid var(--border);
+  }
+
+  /* Table */
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:14px;
+    background:var(--bg-1);
+    border-radius:8px;
+    overflow:hidden;
+  }
+  thead{background:var(--bg-3)}
+  th{
+    text-align:left;
+    padding:14px 16px;
+    font-weight:600;
+    color:var(--nv-green);
+    font-size:13px;
+    letter-spacing:0.5px;
+  }
+  td{
+    padding:14px 16px;
+    border-top:1px solid var(--border);
+    color:var(--text-2);
+  }
+  td strong{color:var(--text-1);font-weight:600}
+  .tag-green{color:var(--nv-green);font-weight:600}
+  .tag-amber{color:var(--accent-amber);font-weight:600}
+  .tag-red{color:var(--accent-red);font-weight:600}
+  .tag-blue{color:var(--accent-blue);font-weight:600}
+  tr:hover td{background:rgba(118,185,0,0.03)}
+
+  /* Chart container */
+  .chart-wrap{
+    background:var(--bg-1);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:24px;
+    margin-bottom:24px;
+  }
+  .chart-title{font-size:15px;font-weight:600;margin-bottom:4px}
+  .chart-sub{font-size:12px;color:var(--text-3);margin-bottom:20px}
+  .chart-canvas{position:relative;height:320px}
+
+  /* Analogy */
+  .analogy{
+    display:grid;
+    grid-template-columns:1fr auto 1fr;
+    gap:16px;
+    margin:16px 0;
+    align-items:center;
+  }
+  .analogy-box{
+    background:var(--bg-2);
+    border:1px solid var(--border);
+    border-radius:6px;
+    padding:16px 20px;
+  }
+  .analogy-box.apple{border-left:3px solid #A0A0A0}
+  .analogy-box.nvidia{border-left:3px solid var(--nv-green)}
+  .analogy-label{font-size:11px;color:var(--text-3);letter-spacing:1px;margin-bottom:6px}
+  .analogy-value{font-weight:600;color:var(--text-1)}
+  .analogy-arrow{color:var(--nv-green);font-size:20px;text-align:center}
+
+  /* Quote */
+  blockquote{
+    background:linear-gradient(135deg, rgba(118,185,0,0.06), transparent);
+    border-left:4px solid var(--nv-green);
+    padding:24px 28px;
+    margin:32px 0;
+    border-radius:0 8px 8px 0;
+    font-size:17px;
+    color:var(--text-1);
+    line-height:1.8;
+  }
+  blockquote strong{color:var(--nv-green)}
+
+  /* Footer */
+  footer{
+    margin-top:80px;
+    padding-top:32px;
+    border-top:1px solid var(--border);
+    text-align:center;
+    color:var(--text-3);
+    font-size:13px;
+  }
+  footer .logo{color:var(--nv-green);font-weight:700;letter-spacing:2px;margin-bottom:8px}
+
+  /* Responsive */
+  @media(max-width:860px){
+    .hero h1{font-size:32px}
+    .stat-grid{grid-template-columns:repeat(2,1fr)}
+    .two-col{grid-template-columns:1fr}
+    .analogy{grid-template-columns:1fr}
+    .container{padding:24px 16px}
+    table{font-size:13px}
+    th,td{padding:10px 12px}
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag">▌ INVESTMENT RESEARCH</div>
+    <h1>NVIDIA <span class="highlight">免费 Token</span> 战略<br>AI 工厂的阳谋</h1>
+    <p>从"卖铲子"到"卖水电"——用年利润 1.5% 的零头，换未来 5 年数千亿美元估值溢价</p>
+    <div class="hero-meta">2026.04.23 · 财务 BP 视角 · 投研笔记</div>
+  </div>
+
+  <!-- TL;DR -->
+  <div class="tldr">
+    <div class="tldr-label">▌ 核心结论</div>
+    <h2>模型来来去去，卡一直在。</h2>
+    <p>NVIDIA 卡住的是 <strong>"算力"这个咽喉</strong>（100% 话语权），而非"模型"这个大脑（30% 货架话语权）。免费发 token 本质是 <strong>Jensen 花小钱买"算力收租权"</strong>——复刻 AWS 2006 / App Store 2008 剧本：现在看像慈善，十年后看是史上最赚的生意。</p>
+  </div>
+
+  <!-- SECTION 1: Key Stats -->
+  <section>
+    <div class="section-header">
+      <span class="section-number">01</span>
+      <h2>关键数字一览</h2>
+      <span class="section-sub">Cost vs. Return</span>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-label">1 年直接投入</div>
+        <div class="stat-value">$12B</div>
+        <div class="stat-desc">占 NVIDIA 年净利润 1.5%</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">5 年累计净收益</div>
+        <div class="stat-value">$572B</div>
+        <div class="stat-desc">含估值溢价 $5000 亿</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">5 年 ROI</div>
+        <div class="stat-value">7,600%</div>
+        <div class="stat-desc">含硬件拉动与估值重构</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">估值倍数跃迁</div>
+        <div class="stat-value">20x→40x</div>
+        <div class="stat-desc">周期股 → AI 平台股</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: Business Model Evolution -->
+  <section>
+    <div class="section-header">
+      <span class="section-number">02</span>
+      <h2>商业模式三阶段演化</h2>
+      <span class="section-sub">Hardware → Platform → AI Factory</span>
+    </div>
+
+    <div class="chart-wrap">
+      <div class="chart-title">收入结构演化（FY2025 → FY2030E）</div>
+      <div class="chart-sub">硬件占比下降 = 经常性收入崛起 = 估值倍数重构</div>
+      <div class="chart-canvas"><canvas id="revenueChart"></canvas></div>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th>阶段</th><th>核心模式</th><th>收入特征</th><th>毛利率</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>1.0 硬件时代</strong><br><span style="color:var(--text-3);font-size:12px">~2023 前</span></td><td>卖 GPU 给游戏/数据中心</td><td>一次性、周期性</td><td>60-65%</td></tr>
+        <tr><td><strong>2.0 AI 基建时代</strong><br><span style="color:var(--text-3);font-size:12px">2023-2025</span></td><td>H100/B200 卖给云厂和主权 AI</td><td>一次性、高增长但仍周期</td><td>75%+</td></tr>
+        <tr><td><strong class="tag-green">3.0 AI 工厂时代</strong><br><span style="color:var(--text-3);font-size:12px">2025 →</span></td><td><strong>GPU + NIM + DGX Cloud + 模型市场</strong></td><td class="tag-green">订阅 + 使用量计费</td><td class="tag-green">80%+（软件 85-90%）</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- SECTION 3: New Revenue Lines -->
+  <section>
+    <div class="section-header">
+      <span class="section-number">03</span>
+      <h2>四条新增收入线</h2>
+      <span class="section-sub">Beyond Selling GPUs</span>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th>业务</th><th>形态</th><th>对标</th><th>定价逻辑</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong class="tag-green">DGX Cloud</strong></td><td>租用 NVIDIA 数据中心</td><td>AWS / Azure</td><td>$/GPU-hour</td></tr>
+        <tr><td><strong class="tag-green">NIM</strong></td><td>模型推理容器授权</td><td>Docker + 模型市场</td><td>按部署节点/订阅</td></tr>
+        <tr><td><strong class="tag-green">build.nvidia.com API</strong></td><td>OpenAI 兼容端点</td><td>Together AI / Fireworks</td><td>按 token 计费</td></tr>
+        <tr><td><strong class="tag-green">AI Enterprise Suite</strong></td><td>企业软件栈订阅</td><td>Red Hat 模式</td><td>$4,500/GPU/年</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- SECTION 4: iPhone Analogy -->
+  <section>
+    <div class="section-header">
+      <span class="section-number">04</span>
+      <h2>苹果类比（修正版）</h2>
+      <span class="section-sub">B 端版的 iPhone 闭环</span>
+    </div>
+
+    <div class="analogy">
+      <div class="analogy-box apple">
+        <div class="analogy-label">APPLE</div>
+        <div class="analogy-value">iPhone</div>
+      </div>
+      <div class="analogy-arrow">→</div>
+      <div class="analogy-box nvidia">
+        <div class="analogy-label">NVIDIA</div>
+        <div class="analogy-value">Blackwell / Rubin GPU</div>
+      </div>
+    </div>
+
+    <div class="analogy">
+      <div class="analogy-box apple">
+        <div class="analogy-label">APPLE</div>
+        <div class="analogy-value">iOS（最深护城河）</div>
+      </div>
+      <div class="analogy-arrow">→</div>
+      <div class="analogy-box nvidia">
+        <div class="analogy-label">NVIDIA</div>
+        <div class="analogy-value">CUDA（最深护城河）</div>
+      </div>
+    </div>
+
+    <div class="analogy">
+      <div class="analogy-box apple">
+        <div class="analogy-label">APPLE</div>
+        <div class="analogy-value">App Store（分发）</div>
+      </div>
+      <div class="analogy-arrow">→</div>
+      <div class="analogy-box nvidia">
+        <div class="analogy-label">NVIDIA</div>
+        <div class="analogy-value">NIM + build.nvidia.com</div>
+      </div>
+    </div>
+
+    <div class="analogy">
+      <div class="analogy-box apple">
+        <div class="analogy-label">APPLE</div>
+        <div class="analogy-value">iCloud / 服务订阅</div>
+      </div>
+      <div class="analogy-arrow">→</div>
+      <div class="analogy-box nvidia">
+        <div class="analogy-label">NVIDIA</div>
+        <div class="analogy-value">DGX Cloud + AI Enterprise</div>
+      </div>
+    </div>
+
+    <blockquote>
+      <strong>NVIDIA 比苹果更强的三点</strong>：① 企业换 CUDA 成本远高于用户换 iPhone；② B 端 AI 基建天花板远高于 C 端消费电子；③ 企业一旦部署就是 3-5 年合同锁定。
+    </blockquote>
+  </section>
+
+  <!-- SECTION 5: Model Market Dynamics -->
+  <section>
+    <div class="section-header">
+      <span class="section-number">05</span>
+      <h2>谁上货架，谁不上</h2>
+      <span class="section-sub">开源吃香，闭源自建</span>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th>模型方类型</th><th>代表</th><th>接入意愿</th><th>原因</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>开源纯研究</strong></td><td>Meta Llama、Mistral</td><td class="tag-green">✅✅✅</td><td>推动开源生态占领心智</td></tr>
+        <tr><td><strong>开源+商业化</strong></td><td>DeepSeek、Kimi、Qwen</td><td class="tag-green">✅✅✅</td><td>全球开发者获客</td></tr>
+        <tr><td><strong>中国模型出海</strong></td><td>MiniMax、智谱、零一</td><td class="tag-green">✅✅✅</td><td>绕过合规、获取海外流量</td></tr>
+        <tr><td><strong>闭源一线</strong></td><td>OpenAI、Anthropic、Google</td><td class="tag-red">❌</td><td>自建渠道，不愿被夹层</td></tr>
+        <tr><td><strong>闭源二线</strong></td><td>Cohere、AI21</td><td class="tag-amber">⚠️ 选择性</td><td>部分接入</td></tr>
+      </tbody>
+    </table>
+
+    <div class="two-col" style="margin-top:24px">
+      <div class="card">
+        <div class="card-title">NVIDIA 真正控盘的环节</div>
+        <table style="border:none">
+          <tr><td>模型权重</td><td class="tag-red">❌ 零控制</td></tr>
+          <tr><td>模型优化部署</td><td class="tag-green">✅✅ 强</td></tr>
+          <tr><td><strong>推理算力（GPU）</strong></td><td class="tag-green"><strong>✅✅✅ 绝对</strong></td></tr>
+          <tr><td>分发渠道</td><td class="tag-green">✅ 强但非独家</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-title">模型方接入动机</div>
+        <table style="border:none">
+          <tr><td>分发触达</td><td>触达百万开发者</td></tr>
+          <tr><td>NVIDIA 背书</td><td>"能上 NVIDIA = 认证"</td></tr>
+          <tr><td>免费推理优化</td><td>TensorRT-LLM 加速 2-4x</td></tr>
+          <tr><td>零成本部署</td><td>不用自己买卡</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 6: ROI -->
+  <section>
+    <div class="section-header">
+      <span class="section-number">06</span>
+      <h2>ROI 测算</h2>
+      <span class="section-sub">Cost × Time → Compounding Return</span>
+    </div>
+
+    <div class="chart-wrap">
+      <div class="chart-title">累计成本 vs. 累计收益（5 年视角）</div>
+      <div class="chart-sub">估值溢价在 Y5 爆发——这是"芯片股 → 平台股"估值重构的临界点</div>
+      <div class="chart-canvas"><canvas id="roiChart"></canvas></div>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th>时间</th><th>累计成本</th><th>累计收益</th><th>净值</th><th>ROI</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Y1 (2026)</strong></td><td>$12B</td><td>$45B</td><td class="tag-green">+$33B</td><td class="tag-green">275%</td></tr>
+        <tr><td><strong>Y3 (2028)</strong></td><td>$40B</td><td>$300B</td><td class="tag-green">+$260B</td><td class="tag-green">650%</td></tr>
+        <tr><td><strong class="tag-green">Y5 (2030)</strong></td><td>$75B</td><td>$800B + $5,000B 估值溢价</td><td class="tag-green"><strong>+$5,725B</strong></td><td class="tag-green"><strong>7,600%</strong></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- SECTION 7: Analog -->
+  <section>
+    <div class="section-header">
+      <span class="section-number">07</span>
+      <h2>历史剧本参照</h2>
+      <span class="section-sub">AWS 2010 / App Store 2008</span>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">AWS 路径</div>
+        <table style="border:none;font-size:13px">
+          <tr><td><strong>2006-2010</strong></td><td>亏损建生态（累计 $30B）</td></tr>
+          <tr><td><strong>2015</strong></td><td>首次独立盈利</td></tr>
+          <tr><td><strong>2024</strong></td><td class="tag-green">年收入 $1,000B+，贡献亚马逊 60% 利润</td></tr>
+        </table>
+        <p style="color:var(--text-3);font-size:13px;margin-top:12px;font-style:italic">
+          NVIDIA build.nvidia.com ≈ AWS 2010 年
+        </p>
+      </div>
+      <div class="card">
+        <div class="card-title">App Store 路径</div>
+        <table style="border:none;font-size:13px">
+          <tr><td><strong>2008</strong></td><td>免费上架，倒贴开发者</td></tr>
+          <tr><td><strong>2015</strong></td><td>真正开始抽成变现</td></tr>
+          <tr><td><strong>2024</strong></td><td class="tag-green">服务收入 $960B，毛利率 74%</td></tr>
+        </table>
+        <p style="color:var(--text-3);font-size:13px;margin-top:12px;font-style:italic">
+          NVIDIA 免费 token ≈ App Store 2008 年
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 8: Risks -->
+  <section>
+    <div class="section-header">
+      <span class="section-number">08</span>
+      <h2>风险压力测试</h2>
+      <span class="section-sub">Scenario Analysis</span>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th>悲观场景</th><th>概率</th><th>影响</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>AMD ROCm 追上 CUDA</td><td class="tag-amber">20%</td><td>生态溢价归零，损失 $3,000B 估值</td></tr>
+        <tr><td>云厂自研芯片挤压平台</td><td class="tag-red">40%</td><td>分发天花板受限，收益折半</td></tr>
+        <tr><td>开源模型免费化触底</td><td class="tag-red">50%</td><td>Token 业务毛利被压，硬件不受影响</td></tr>
+        <tr><td>反垄断拆分 CUDA</td><td class="tag-green">10%</td><td>灾难级，短期不现实</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- SECTION 9: Investment Implications -->
+  <section>
+    <div class="section-header">
+      <span class="section-number">09</span>
+      <h2>投资含义与监控指标</h2>
+      <span class="section-sub">What to Watch</span>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">短/中/长期判断</div>
+        <table style="border:none;font-size:13px">
+          <tr><td><strong class="tag-blue">短期 1-2 年</strong></td><td>Blackwell/Rubin 硬件叙事，看 hyperscaler capex</td></tr>
+          <tr><td><strong class="tag-amber">中期 3-5 年</strong></td><td>Software & Services 披露是估值溢价信号</td></tr>
+          <tr><td><strong class="tag-green">长期锚点</strong></td><td>经常性收入突破 $30B = 估值切换临界点</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-title">核心监控指标</div>
+        <ol style="color:var(--text-2);font-size:13px;padding-left:20px;line-height:2">
+          <li>Software run-rate（季度财报电话会必提）</li>
+          <li>DGX Cloud 合作方数量</li>
+          <li>NIM 付费企业数</li>
+          <li>build.nvidia.com 开发者增长</li>
+          <li>超大客户自研芯片份额</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <blockquote>
+    <strong>一句话总结</strong>：NVIDIA 卡住的是"算力"这个咽喉，而非"模型"这个大脑。免费发 token 本质是 Jensen 花小钱买未来的"算力收租权"——<strong>现在看起来像慈善，十年后看是史上最赚的生意</strong>。
+  </blockquote>
+
+  <footer>
+    <div class="logo">▌ NVIDIA STRATEGY DECK</div>
+    <div>财务 BP 视角投研笔记 · 2026.04.23</div>
+    <div style="margin-top:8px;font-size:11px">Built with ▌ claude.ai</div>
+  </footer>
+
+</div>
+
+<script>
+// Chart.js global defaults
+Chart.defaults.color = '#B8B8B8';
+Chart.defaults.borderColor = '#2E2E2E';
+Chart.defaults.font.family = '-apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif';
+
+// Revenue Evolution Chart
+new Chart(document.getElementById('revenueChart'), {
+  type: 'bar',
+  data: {
+    labels: ['FY2023', 'FY2025', 'FY2027E', 'FY2030E'],
+    datasets: [
+      {
+        label: '硬件 (GPU)',
+        data: [85, 88, 78, 68],
+        backgroundColor: '#76B900',
+        stack: 'rev',
+        borderRadius: 4,
+      },
+      {
+        label: '软件 + NIM',
+        data: [3, 5, 10, 17],
+        backgroundColor: '#FFB800',
+        stack: 'rev',
+        borderRadius: 4,
+      },
+      {
+        label: '云服务 (DGX Cloud)',
+        data: [2, 4, 8, 12],
+        backgroundColor: '#3FA9F5',
+        stack: 'rev',
+        borderRadius: 4,
+      },
+      {
+        label: '其他',
+        data: [10, 3, 4, 3],
+        backgroundColor: '#555555',
+        stack: 'rev',
+        borderRadius: 4,
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { padding: 16, font: { size: 12 }}},
+      tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y}%` }}
+    },
+    scales: {
+      x: { stacked: true, grid: { display: false }},
+      y: { stacked: true, max: 100, ticks: { callback: v => v + '%' }, grid: { color: '#1A1A1A' }}
+    }
+  }
+});
+
+// ROI Chart
+new Chart(document.getElementById('roiChart'), {
+  type: 'line',
+  data: {
+    labels: ['Y0', 'Y1', 'Y2', 'Y3', 'Y4', 'Y5'],
+    datasets: [
+      {
+        label: '累计成本 ($B)',
+        data: [0, 12, 26, 40, 56, 75],
+        borderColor: '#E53935',
+        backgroundColor: 'rgba(229,57,53,0.1)',
+        fill: true,
+        tension: 0.4,
+        borderWidth: 2,
+      },
+      {
+        label: '累计直接收益 ($B)',
+        data: [0, 45, 150, 300, 500, 800],
+        borderColor: '#76B900',
+        backgroundColor: 'rgba(118,185,0,0.1)',
+        fill: true,
+        tension: 0.4,
+        borderWidth: 2,
+      },
+      {
+        label: '含估值溢价 ($B)',
+        data: [0, 100, 500, 1500, 3000, 5800],
+        borderColor: '#FFB800',
+        backgroundColor: 'rgba(255,184,0,0.05)',
+        fill: true,
+        tension: 0.4,
+        borderWidth: 2,
+        borderDash: [6, 4],
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { padding: 16, font: { size: 12 }}},
+      tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: $${ctx.parsed.y}B` }}
+    },
+    scales: {
+      x: { grid: { display: false }},
+      y: { ticks: { callback: v => '$' + v + 'B' }, grid: { color: '#1A1A1A' }}
+    }
+  }
+});
+</script>
+</body>
+</html>
